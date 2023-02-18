@@ -3,3 +3,6 @@
 /emailconfig/__pycache__
 /scheduler/__pycache__
 /.env
+/celerybeat-schedule.bak
+/celerybeat-schedule.dat
+/celerybeat-schedule.dir
