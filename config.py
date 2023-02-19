@@ -13,6 +13,7 @@ class ProductionConfig(Config):
     MAIL_PASSWORD=config('MAIL_PASSWORD')
     MAIL_USE_TLS=config('MAIL_USE_TLS')
     MAIL_DEFAULT_SENDER=config('MAIL_DEFAULT_SENDER')
+    JSON_AS_ASCII=False
 
 class DevelopmentConfig(Config):
     ENV="development"
@@ -25,3 +26,4 @@ class DevelopmentConfig(Config):
     MAIL_PASSWORD=config('MAIL_PASSWORD')
     MAIL_USE_TLS=config('MAIL_USE_TLS')
     MAIL_DEFAULT_SENDER=config('MAIL_DEFAULT_SENDER')
+    JSON_AS_ASCII=False

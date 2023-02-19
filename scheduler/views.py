@@ -1,7 +1,7 @@
 import pytz
 from datetime import datetime
-from flask import Blueprint,request
-from .models import EmailScheduler,EventParticipants
+from flask import Blueprint,request,Response
+from .models import EmailScheduler,EventParticipants,Events
 from database.database import db
 from tasks import send_email
 
@@ -35,3 +35,28 @@ def save_emails():
     # send_email.apply_async(eta=utc_dt)
 
     return {"data" : data}
+
+@scheduler.route('/api/event',methods=['POST'])
+def save_event():
+    data = request.json
+    new_event = Events(
+        event_name=data['event_name']
+    )
+    db.session.add(new_event)
+    db.session.commit()
+
+    return Response("success add event", status=201, mimetype='application/json')
+
+@scheduler.route('/api/participant', methods=['POST'])
+def save_participant():
+    data = request.json
+    new_participant =  EventParticipants(
+        event_id=data['event_id'],
+        full_name=data['full_name'],
+        email=data['email']
+    )
+
+    db.session.add(new_participant)
+    db.session.commit()
+
+    return Response("success add participant", status=201, mimetype='application/json')

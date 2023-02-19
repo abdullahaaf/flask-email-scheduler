@@ -13,5 +13,5 @@ celery_app = Celery('tasks', broker=config('CELERY_BROKER_URL'), backend=config(
 @celery_app.task
 def send_email(emails, subject, body):
     with app.app_context():
-        msg = Message(recipients=emails, subject=subject, body=body)
+        msg = Message(recipients=emails, subject=subject, body=body, charset='UTF-8')
         mail.send(msg)

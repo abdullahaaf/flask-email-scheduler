@@ -12,3 +12,7 @@ class EventParticipants(db.Model):
     event_id = db.Column(db.Integer, nullable=False)
     full_name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False)
+
+class Events(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    event_name = db.Column(db.String(255), nullable=False)
