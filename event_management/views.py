@@ -6,9 +6,9 @@ from .models import EmailScheduler,EventParticipants,Events
 from database.database import db
 from tasks import send_email
 
-scheduler = Blueprint('scheduler', __name__)
+event_management = Blueprint('event_management', __name__)
 
-@scheduler.route("/save_emails", methods=["POST"])
+@event_management.route("/save_emails", methods=["POST"])
 @cross_origin()
 def save_emails():
     data = request.get_json()
@@ -45,7 +45,7 @@ def save_emails():
         'data' : data
     }, 201
 
-@scheduler.route('/api/event', methods=['POST'])
+@event_management.route('/api/event', methods=['POST'])
 @cross_origin()
 def save_event():
     data = request.json
@@ -60,7 +60,7 @@ def save_event():
         'data' : data
     }, 201
 
-@scheduler.route('/api/event', methods=['GET'])
+@event_management.route('/api/event', methods=['GET'])
 @cross_origin()
 def list_event():
     events = Events.query.all()
@@ -73,7 +73,7 @@ def list_event():
 
     return jsonify(response), 200
 
-@scheduler.route('/api/participant', methods=['POST'])
+@event_management.route('/api/participant', methods=['POST'])
 @cross_origin()
 def save_participant():
     data = request.json

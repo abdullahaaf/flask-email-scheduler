@@ -1,7 +1,7 @@
 from flask import Flask
 from database import database
 
-from scheduler.views import scheduler
+from event_management.views import event_management
 
 def create_app():
     app = Flask(__name__)
@@ -12,7 +12,7 @@ def create_app():
     with app.app_context():
         database.db.create_all()
 
-    app.register_blueprint(scheduler)
+    app.register_blueprint(event_management)
     
     return app
 

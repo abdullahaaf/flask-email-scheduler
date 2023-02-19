@@ -1,9 +1,9 @@
 /__pycache__
 /database/__pycache__
 /emailconfig/__pycache__
-/scheduler/__pycache__
 /.env
 /celerybeat-schedule.bak
 /celerybeat-schedule.dat
 /celerybeat-schedule.dir
 tests/__pycache__
+event_management/__pycache__
