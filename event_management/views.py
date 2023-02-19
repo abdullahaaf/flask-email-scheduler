@@ -5,6 +5,7 @@ from flask_cors import cross_origin
 from .models import EmailScheduler,EventParticipants,Events
 from database.database import db
 from celery_queue.tasks import send_email
+from decouple import config
 
 event_management = Blueprint('event_management', __name__)
 
@@ -28,8 +29,9 @@ def save_emails():
     db.session.commit()
 
     send_time_str = data['timestamp']
+    timezone = config('TIMEZONE')
     send_time = datetime.strptime(send_time_str, "%Y-%m-%d %H:%M")
-    local_tz = pytz.timezone('Asia/Jakarta')
+    local_tz = pytz.timezone(timezone)
     local_dt = local_tz.localize(send_time)
     utc_dt = local_dt.astimezone(pytz.utc)
 

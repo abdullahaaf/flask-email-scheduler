@@ -52,6 +52,8 @@ To run this project, you will need to configure the following environment variab
 
 `DB_PASS` database password for container db
 
+`TIMEZONE` set timezone for celery worker scheduling email delivery. Ex: Asia/Singapore
+
 
 ## Run Locally
 make sure below port already opened :
