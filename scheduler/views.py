@@ -11,7 +11,12 @@ scheduler = Blueprint('scheduler', __name__)
 @scheduler.route("/save_emails", methods=["POST"])
 @cross_origin()
 def save_emails():
-    data = request.json
+    data = request.get_json()
+
+    if data.get('event_id') == None or data.get('email_subject') == None or data.get('email_content') == None or data.get('timestamp') == None:
+        return {
+            'message' : 'Error, one of field is empty. Check your data'
+        }, 400
 
     email_scheduler = EmailScheduler(
         event_id = data['event_id'],
@@ -34,9 +39,11 @@ def save_emails():
         emails.append(email.email)
 
     send_email.apply_async(args=[emails, data['email_subject'], data['email_content'],], eta=utc_dt)
-    # send_email.apply_async(eta=utc_dt)
 
-    return data, 201
+    return {
+        'message' : 'success schedule email',
+        'data' : data
+    }, 201
 
 @scheduler.route('/api/event', methods=['POST'])
 @cross_origin()
@@ -48,7 +55,10 @@ def save_event():
     db.session.add(new_event)
     db.session.commit()
 
-    return data, 201
+    return {
+        'message' : 'success add event',
+        'data' : data
+    }, 201
 
 @scheduler.route('/api/event', methods=['GET'])
 @cross_origin()
@@ -76,4 +86,7 @@ def save_participant():
     db.session.add(new_participant)
     db.session.commit()
 
-    return data, 201
+    return {
+        'message' : 'success add participant',
+        'data' : data
+    }, 201
