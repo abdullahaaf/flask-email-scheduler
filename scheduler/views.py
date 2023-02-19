@@ -1,27 +1,11 @@
 import pytz
 from datetime import datetime
 from flask import Blueprint,request
-from flask_mail import Message
-from emailconfig.emailconfig import mail
-from celery import Celery
-from decouple import config
-
-from .models import EmailScheduler, EventParticipants
+from .models import EmailScheduler,EventParticipants
 from database.database import db
+from tasks import send_email
 
-celery_app = Celery('views', broker=config('CELERY_BROKER_URL'), backend=config('CELERY_BACKEND_URL'))
 scheduler = Blueprint('scheduler', __name__)
-
-
-@celery_app.task
-def send_email(event_id, body, subject):
-    emails = EventParticipants.query.filter(EventParticipants.event_id == event_id).all()
-    list_email = []
-    for email in emails:
-        list_email.append(email.email)
-
-    msg = Message(recipients=list_email, body=body, subject=subject)
-    mail.send(msg)
 
 @scheduler.route("/save_emails", methods=["POST"])
 def save_emails():
@@ -41,6 +25,13 @@ def save_emails():
     local_tz = pytz.timezone('Asia/Jakarta')
     local_dt = local_tz.localize(send_time)
     utc_dt = local_dt.astimezone(pytz.utc)
-    send_email.apply_async(args=[data['event_id'], data['email_content'], data['email_subject']], eta=utc_dt)
+
+    emails = []
+    participants = EventParticipants.query.filter(EventParticipants.event_id == data['event_id'])
+    for email in participants:
+        emails.append(email.email)
+
+    send_email.apply_async(args=[emails, data['email_subject'], data['email_content'],], eta=utc_dt)
+    # send_email.apply_async(eta=utc_dt)
 
     return {"data" : data}
