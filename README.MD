@@ -158,3 +158,6 @@ To run tests, run the following command
 ex :
 ```bash
 py.test tests/test_email.py
+
+## Authors
+Abdullah Amin Firdaus
