@@ -49,6 +49,12 @@ def save_emails():
 @cross_origin()
 def save_event():
     data = request.json
+
+    if data.get('event_name') == None:
+        return {
+            'message' : 'Error, event name is required'
+        }, 400
+
     new_event = Events(
         event_name=data['event_name']
     )
@@ -71,12 +77,21 @@ def list_event():
         event_data['event_name'] = event.event_name
         response.append(event_data)
 
-    return jsonify(response), 200
+    return {
+        'message' : 'success get events',
+        'data' : response
+    }, 200
 
 @event_management.route('/api/participant', methods=['POST'])
 @cross_origin()
 def save_participant():
     data = request.json
+
+    if data.get('event_id') == None or data.get('full_name') == None or data.get('email') == None:
+        return {
+            'message' : 'Error, one of field is empty. Check your data'
+        }, 400
+
     new_participant =  EventParticipants(
         event_id=data['event_id'],
         full_name=data['full_name'],

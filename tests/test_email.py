@@ -7,7 +7,7 @@ def test_save_emails(client, app):
             'email_content': 'Test Content',
             'timestamp': '2023-02-25 10:00'
         }
-        response = client.post('/save_emails', json=data)
+        response = client.post('/api/save_emails', json=data)
         assert response.status_code == 201
         assert response.json == {
             'message': 'success schedule email',
@@ -25,7 +25,7 @@ def test_save_emails(client, app):
             'email_subject': 'Test Subject',
             'timestamp': '2023-02-25 10:00'
         }
-        response = client.post('/save_emails', json=data)
+        response = client.post('/api/save_emails', json=data)
         assert response.status_code == 400
         assert response.json == {
             'message': 'Error, one of field is empty. Check your data'
