@@ -1,6 +1,7 @@
 import pytz
 from datetime import datetime
-from flask import Blueprint,request,Response
+from flask import Blueprint,request,jsonify
+from flask_cors import cross_origin
 from .models import EmailScheduler,EventParticipants,Events
 from database.database import db
 from tasks import send_email
@@ -8,6 +9,7 @@ from tasks import send_email
 scheduler = Blueprint('scheduler', __name__)
 
 @scheduler.route("/save_emails", methods=["POST"])
+@cross_origin()
 def save_emails():
     data = request.json
 
@@ -21,7 +23,7 @@ def save_emails():
     db.session.commit()
 
     send_time_str = data['timestamp']
-    send_time = datetime.strptime(send_time_str, "%Y-%m-%d %H:%M:%S")
+    send_time = datetime.strptime(send_time_str, "%Y-%m-%d %H:%M")
     local_tz = pytz.timezone('Asia/Jakarta')
     local_dt = local_tz.localize(send_time)
     utc_dt = local_dt.astimezone(pytz.utc)
@@ -34,9 +36,10 @@ def save_emails():
     send_email.apply_async(args=[emails, data['email_subject'], data['email_content'],], eta=utc_dt)
     # send_email.apply_async(eta=utc_dt)
 
-    return {"data" : data}
+    return data, 201
 
-@scheduler.route('/api/event',methods=['POST'])
+@scheduler.route('/api/event', methods=['POST'])
+@cross_origin()
 def save_event():
     data = request.json
     new_event = Events(
@@ -45,9 +48,23 @@ def save_event():
     db.session.add(new_event)
     db.session.commit()
 
-    return Response("success add event", status=201, mimetype='application/json')
+    return data, 201
+
+@scheduler.route('/api/event', methods=['GET'])
+@cross_origin()
+def list_event():
+    events = Events.query.all()
+    response = []
+    for event in events:
+        event_data = {}
+        event_data['event_id'] = event.id
+        event_data['event_name'] = event.event_name
+        response.append(event_data)
+
+    return jsonify(response), 200
 
 @scheduler.route('/api/participant', methods=['POST'])
+@cross_origin()
 def save_participant():
     data = request.json
     new_participant =  EventParticipants(
@@ -59,4 +76,4 @@ def save_participant():
     db.session.add(new_participant)
     db.session.commit()
 
-    return Response("success add participant", status=201, mimetype='application/json')
+    return data, 201
