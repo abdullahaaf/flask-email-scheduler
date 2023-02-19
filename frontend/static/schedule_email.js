@@ -12,7 +12,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: api_base_url+"/save_emails",
+            url: api_base_url+"/api/save_emails",
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify(schedule_data),

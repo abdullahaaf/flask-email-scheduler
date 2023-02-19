@@ -8,7 +8,7 @@ from celery_queue.tasks import send_email
 
 event_management = Blueprint('event_management', __name__)
 
-@event_management.route("/save_emails", methods=["POST"])
+@event_management.route("/api/save_emails", methods=["POST"])
 @cross_origin()
 def save_emails():
     data = request.get_json()
@@ -60,7 +60,7 @@ def save_event():
         'data' : data
     }, 201
 
-@event_management.route('/api/event', methods=['GET'])
+@event_management.route('/api/events', methods=['GET'])
 @cross_origin()
 def list_event():
     events = Events.query.all()
