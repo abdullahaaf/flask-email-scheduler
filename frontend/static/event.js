@@ -2,7 +2,7 @@ $(document).ready(function(){
     $('#btn_add_event').on('click', function(e){
         let event_name = $('#event_name').val();
         $.ajax({
-            url: "http://192.168.71.145:5000/api/event",
+            url: api_base_url+"/api/event",
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify({

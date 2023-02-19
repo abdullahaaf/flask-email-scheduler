@@ -17,8 +17,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-    <script src="{{url_for('static', filename='global.js')}}"></script>
-    <script src="{{url_for('static', filename='participant.js')}}"></script>
 </head>
 
 <body>
@@ -45,23 +43,13 @@
                 </form>
             </div>
         </div>
-        <br>
-        <div class="row">
-            <div class="col-lg-12"></div>
-                <h2>List Participant</h2>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Event Name</th>
-                            <th scope="col">Full Name</th>
-                            <th scope="col">Email</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
     </div>
 </body>
+
+<script>
+    let api_base_url = "{{ api_base_url }}"
+</script>
+<script src="{{url_for('static', filename='global.js')}}"></script>
+<script src="{{url_for('static', filename='participant.js')}}"></script>
 
 </html>

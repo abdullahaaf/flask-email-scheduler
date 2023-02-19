@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 function populateSelectEvent() {
     $.ajax({
-        url: "http://192.168.71.145:5000/api/event",
+        url: api_base_url+"/api/event",
         type: 'GET',
         success: function (data) {
             // Remove existing options from the select element

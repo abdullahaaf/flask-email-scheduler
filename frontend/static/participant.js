@@ -5,7 +5,7 @@ $(document).ready(function(){
         let email = $('#email').val()
 
         $.ajax({
-            url: "http://192.168.71.145:5000/api/participant",
+            url: api_base_url+"/api/participant",
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify({

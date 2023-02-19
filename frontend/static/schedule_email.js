@@ -12,7 +12,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: "http://192.168.71.145:5000/save_emails",
+            url: api_base_url+"/save_emails",
             type: 'POST',
             contentType: "application/json",
             data: JSON.stringify(schedule_data),
