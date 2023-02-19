@@ -1,0 +1,70 @@
+version : '3'
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+    networks:
+      - eventmanagementnetworks
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6380:6379
+    networks:
+      - eventmanagementnetworks
+
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "python app.py"
+    container_name: backend
+    ports:
+      - 5000:5000
+    networks:
+      - eventmanagementnetworks
+    depends_on:
+      - db
+      - redis
+    links:
+      - db:db
+      - redis:redis
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "python frontend/app.py"
+    container_name: frontend
+    ports:
+      - 5500:5500
+    networks:
+      - eventmanagementnetworks
+    depends_on:
+      - backend
+
+  worker:
+    build:
+        context: .
+        dockerfile: Dockerfile
+    command: bash -c "celery -A celery_queue.tasks.celery_app worker --loglevel=INFO"
+    container_name: worker
+    networks:
+      - eventmanagementnetworks
+    depends_on:
+      - backend
+      - redis
+    
+
+networks:
+  eventmanagementnetworks:
+    driver: bridge
