@@ -4,7 +4,7 @@ from flask import Blueprint,request,jsonify
 from flask_cors import cross_origin
 from .models import EmailScheduler,EventParticipants,Events
 from database.database import db
-from tasks import send_email
+from celery_queue.tasks import send_email
 
 event_management = Blueprint('event_management', __name__)
 

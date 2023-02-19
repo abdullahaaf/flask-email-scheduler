@@ -7,3 +7,5 @@
 /celerybeat-schedule.dir
 tests/__pycache__
 event_management/__pycache__
+celery_queue/__pycache__
+.pytest_cache
