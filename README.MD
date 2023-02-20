@@ -99,6 +99,7 @@ celery -A celery_queue.tasks.celery_app worker --loglevel=info
 
 
 ## API Reference
+![API documentation on postman](https://documenter.getpostman.com/view/2479819/2s93CHvFep)
 ### Event
 #### Get all event
 
