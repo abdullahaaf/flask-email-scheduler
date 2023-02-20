@@ -6,6 +6,7 @@ from .models import EmailScheduler,EventParticipants,Events
 from database.database import db
 from celery_queue.tasks import send_email
 from decouple import config
+from unidecode import unidecode
 
 event_management = Blueprint('event_management', __name__)
 
@@ -96,8 +97,8 @@ def save_participant():
 
     new_participant =  EventParticipants(
         event_id=data['event_id'],
-        full_name=data['full_name'],
-        email=data['email']
+        full_name=unidecode(data['full_name']), #handling full_name that have unicode character
+        email=unidecode(data['email']) #handling email that have unicode character
     )
 
     db.session.add(new_participant)
