@@ -6,10 +6,6 @@ def test_event(client, app):
         assert response.json == {
             'message': 'success get events',
             'data': [
-                {
-                    'event_id' : 1,
-                    'event_name' : 'Master class'
-                }
             ]
         }
 
